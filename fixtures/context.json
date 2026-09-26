@@ -1,21 +1,355 @@
 {
   "domain": "property-project-funds",
-  "version": 1,
+  "version": 2,
   "sample_id": "sample-020",
+  "description": "虚构样例：项目公司独立账、主办银行监管、施工节点拨付、预售/现房销售与风险接管的关联数据，不含真实个人信息或账号。",
+
+  "regimes": [
+    {
+      "id": "REG-2020",
+      "name": "预售资金监管基线规则",
+      "effective_from": "2020-01-01",
+      "rules": {
+        "presale_receipts_into_escrow": true,
+        "disbursement_requires_verified_node": true,
+        "related_party_freeze_review": false,
+        "existing_sale_requires_completion_filing": false
+      }
+    },
+    {
+      "id": "REG-2024",
+      "name": "强化预售监管与现房销售规则",
+      "effective_from": "2024-01-01",
+      "rules": {
+        "presale_receipts_into_escrow": true,
+        "disbursement_requires_verified_node": true,
+        "related_party_freeze_review": true,
+        "hq_transfer_freeze_review": true,
+        "off_account_repayment_freeze_review": true,
+        "existing_sale_requires_completion_filing": true,
+        "existing_sale_requires_visible_listing": true
+      }
+    }
+  ],
+  "policy_changes": [
+    {
+      "id": "PC-2024",
+      "new_regime_id": "REG-2024",
+      "changed_at": "2024-01-01",
+      "retroactive": false,
+      "note": "制度变化只约束变化后签署的合同与发生的拨付；已签署预售合同继续按签署时规则执行，不追溯改写旧合同。"
+    }
+  ],
+
   "actors": [
-    "业务负责人",
-    "执行人员",
-    "审查人员"
+    {"id": "ORG-HC", "kind": "authority", "name": "滨江区住房和城乡建设局（监管部门）"},
+    {"id": "BANK-001", "kind": "bank", "name": "江州银行滨江支行（主办银行）"},
+    {"id": "SUP-001", "kind": "supervisor", "name": "江州工程监理有限公司"},
+    {"id": "SPV-001", "kind": "project_company", "name": "滨江安居置业有限公司（项目公司）", "parent_id": "HQ-001", "independent_ledger_id": "LED-PRJ-001"},
+    {"id": "HQ-001", "kind": "group_hq", "name": "云澜控股集团股份有限公司（开发企业总部）"},
+    {"id": "RP-001", "kind": "contractor_related", "name": "云澜建设集团有限公司（总部关联总包）", "related_to": "HQ-001"},
+    {"id": "GC-001", "kind": "contractor", "name": "江州建工集团有限公司（非关联总包）"},
+    {"id": "TO-001", "kind": "takeover_entity", "name": "江州城市建设投资集团有限公司（风险接管主体）"},
+    {"id": "STATE", "kind": "treasury", "name": "国库（税费收缴）"},
+    {"id": "BY-101", "kind": "buyer", "name": "购房人 BY-101"},
+    {"id": "BY-102", "kind": "buyer", "name": "购房人 BY-102"},
+    {"id": "BY-201", "kind": "buyer", "name": "购房人 BY-201"},
+    {"id": "BY-301", "kind": "buyer", "name": "购房人 BY-301"},
+    {"id": "BY-401", "kind": "buyer", "name": "购房人 BY-401"}
   ],
-  "facts": [
-    "一个项目对应一家独立项目公司",
-    "开发建设销售资金由主办银行归集",
-    "新项目优先采用现房销售并强化预售资金监管"
+
+  "projects": [
+    {
+      "id": "PRJ-001",
+      "name": "云澜·江湾府",
+      "company_id": "SPV-001",
+      "lead_bank_id": "BANK-001",
+      "ledger_id": "LED-PRJ-001",
+      "parcels": [
+        {"id": "P-01", "name": "地块一", "land_use_cert": "DOC-LAND-P01"},
+        {"id": "P-02", "name": "地块二", "land_use_cert": "DOC-LAND-P02"}
+      ],
+      "buildings": [
+        {
+          "id": "B-1", "parcel_id": "P-01", "name": "1号楼", "presale_permit_id": "PS-2022-011",
+          "sale_mode": "presale", "supervised_quota_cny": 9000000,
+          "completion_filing_id": null, "planned_delivery": "2025-12-31"
+        },
+        {
+          "id": "B-2", "parcel_id": "P-01", "name": "2号楼", "presale_permit_id": "PS-2022-012",
+          "sale_mode": "presale", "supervised_quota_cny": 12000000,
+          "completion_filing_id": null, "planned_delivery": "2026-03-31"
+        },
+        {
+          "id": "B-3", "parcel_id": "P-02", "name": "3号楼", "presale_permit_id": null,
+          "sale_mode": "existing", "supervised_quota_cny": 0,
+          "completion_filing_id": "DOC-FIL-B3", "completion_filing_at": "2024-09-02"
+        },
+        {
+          "id": "B-4", "parcel_id": "P-02", "name": "4号楼", "presale_permit_id": null,
+          "sale_mode": "existing", "supervised_quota_cny": 0,
+          "completion_filing_id": "DOC-FIL-B4", "completion_filing_at": "2024-10-18"
+        },
+        {
+          "id": "B-5", "parcel_id": "P-02", "name": "5号楼", "presale_permit_id": null,
+          "sale_mode": "construction_only", "supervised_quota_cny": 7000000,
+          "completion_filing_id": null, "planned_delivery": "2026-12-31"
+        }
+      ]
+    }
   ],
-  "constraints": [
-    "项目公司独立账",
-    "主办银行资金监管",
-    "施工付款核验",
-    "现房交付证据"
-  ]
+
+  "units": [
+    {"id": "U-101", "building_id": "B-1", "room": "1-101"},
+    {"id": "U-102", "building_id": "B-1", "room": "1-102"},
+    {"id": "U-201", "building_id": "B-2", "room": "2-201"},
+    {"id": "U-301", "building_id": "B-3", "room": "3-301"},
+    {"id": "U-401", "building_id": "B-4", "room": "4-401"},
+    {"id": "U-501", "building_id": "B-5", "room": "5-501"}
+  ],
+
+  "accounts": [
+    {"id": "ACC-ESC-01", "bank_id": "BANK-001", "holder_id": "SPV-001", "type": "presale_escrow", "name": "预售资金监管归集户", "project_id": "PRJ-001"},
+    {"id": "ACC-NEW-01", "bank_id": "BANK-001", "holder_id": "SPV-001", "type": "existing_sale_settlement", "name": "现房销售结算户", "project_id": "PRJ-001"},
+    {"id": "ACC-SET-02", "bank_id": "BANK-001", "holder_id": "SPV-001", "type": "general_settlement", "name": "项目公司一般结算户", "project_id": "PRJ-001"},
+    {"id": "ACC-HQ-01", "bank_id": "BANK-OTHER", "holder_id": "HQ-001", "type": "external_hq", "name": "总部账户"},
+    {"id": "ACC-RP-01", "bank_id": "BANK-OTHER", "holder_id": "RP-001", "type": "external_contractor", "name": "关联总包收款户"},
+    {"id": "ACC-GC-01", "bank_id": "BANK-001", "holder_id": "GC-001", "type": "external_contractor", "name": "非关联总包收款户"},
+    {"id": "ACC-TAX-01", "bank_id": "TREASURY", "holder_id": "STATE", "type": "treasury", "name": "国库税费户"},
+    {"id": "ACC-MCH-HQ", "bank_id": "BANK-OTHER", "holder_id": "HQ-001", "type": "external_merchant", "name": "总部关联POS商户（账户外回款通道）"},
+    {"id": "ACC-BY-102", "bank_id": "BANK-CARD", "holder_id": "BY-102", "type": "buyer_card", "name": "购房人 BY-102 原付款卡"}
+  ],
+
+  "construction_nodes": [
+    {"id": "N-B1-01", "building_id": "B-1", "name": "基础与地下结构完成", "weight": 0.20},
+    {"id": "N-B1-02", "building_id": "B-1", "name": "主体结构封顶", "weight": 0.35},
+    {"id": "N-B1-03", "building_id": "B-1", "name": "安装与装饰完成", "weight": 0.20},
+    {"id": "N-B1-04", "building_id": "B-1", "name": "竣工验收备案", "weight": 0.25},
+    {"id": "N-B2-01", "building_id": "B-2", "name": "基础与地下结构完成", "weight": 0.25},
+    {"id": "N-B2-02", "building_id": "B-2", "name": "主体结构封顶", "weight": 0.35},
+    {"id": "N-B2-03", "building_id": "B-2", "name": "安装与装饰完成", "weight": 0.15},
+    {"id": "N-B2-04", "building_id": "B-2", "name": "竣工验收备案", "weight": 0.25},
+    {"id": "N-B3-01", "building_id": "B-3", "name": "基础与地下结构完成", "weight": 0.20},
+    {"id": "N-B3-02", "building_id": "B-3", "name": "主体结构封顶", "weight": 0.35},
+    {"id": "N-B3-03", "building_id": "B-3", "name": "安装与装饰完成", "weight": 0.20},
+    {"id": "N-B3-04", "building_id": "B-3", "name": "竣工验收备案", "weight": 0.25},
+    {"id": "N-B4-01", "building_id": "B-4", "name": "基础与地下结构完成", "weight": 0.20},
+    {"id": "N-B4-02", "building_id": "B-4", "name": "主体结构封顶", "weight": 0.35},
+    {"id": "N-B4-03", "building_id": "B-4", "name": "安装与装饰完成", "weight": 0.20},
+    {"id": "N-B4-04", "building_id": "B-4", "name": "竣工验收备案", "weight": 0.25},
+    {"id": "N-B5-01", "building_id": "B-5", "name": "基础与地下结构完成", "weight": 0.25},
+    {"id": "N-B5-02", "building_id": "B-5", "name": "主体结构封顶", "weight": 0.35},
+    {"id": "N-B5-03", "building_id": "B-5", "name": "安装与装饰完成", "weight": 0.15},
+    {"id": "N-B5-04", "building_id": "B-5", "name": "竣工验收备案", "weight": 0.25}
+  ],
+  "node_verifications": [
+    {"id": "V-B1-01", "node_id": "N-B1-01", "verified_at": "2023-02-18", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB101"},
+    {"id": "V-B1-02", "node_id": "N-B1-02", "verified_at": "2023-09-08", "verifiers": ["SUP-001", "SPV-001", "ORG-HC"], "report_doc": "DOC-R-VB102"},
+    {"id": "V-B1-03", "node_id": "N-B1-03", "verified_at": "2025-07-28", "verifiers": ["SUP-001", "SPV-001", "ORG-HC", "TO-001"], "report_doc": "DOC-R-VB103"},
+    {"id": "V-B2-01", "node_id": "N-B2-01", "verified_at": "2024-05-15", "verifiers": ["SUP-001", "SPV-001", "ORG-HC"], "report_doc": "DOC-R-VB201"},
+    {"id": "V-B3-01", "node_id": "N-B3-01", "verified_at": "2023-10-10", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB301"},
+    {"id": "V-B3-02", "node_id": "N-B3-02", "verified_at": "2024-01-12", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB302"},
+    {"id": "V-B3-03", "node_id": "N-B3-03", "verified_at": "2024-06-20", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB303"},
+    {"id": "V-B3-04", "node_id": "N-B3-04", "verified_at": "2024-08-18", "verifiers": ["SUP-001", "SPV-001", "ORG-HC"], "report_doc": "DOC-R-VB304"},
+    {"id": "V-B4-01", "node_id": "N-B4-01", "verified_at": "2023-12-05", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB401"},
+    {"id": "V-B4-02", "node_id": "N-B4-02", "verified_at": "2024-03-22", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB402"},
+    {"id": "V-B4-03", "node_id": "N-B4-03", "verified_at": "2024-08-02", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB403"},
+    {"id": "V-B4-04", "node_id": "N-B4-04", "verified_at": "2024-10-08", "verifiers": ["SUP-001", "SPV-001", "ORG-HC"], "report_doc": "DOC-R-VB404"},
+    {"id": "V-B5-01", "node_id": "N-B5-01", "verified_at": "2025-05-16", "verifiers": ["SUP-001", "SPV-001"], "report_doc": "DOC-R-VB501"}
+  ],
+
+  "statutory_obligations": [
+    {"id": "SO-001", "kind": "tax", "name": "增值税及附加", "amount_due_cny": 1200000, "due_at": "2025-04-15", "payee_account_id": "ACC-TAX-01"}
+  ],
+
+  "listings": [
+    {"id": "LS-B1", "building_id": "B-1", "status": "presale_permitted", "status_name": "期房在售", "published_by": "ORG-HC", "published_at": "2022-11-01", "evidence_doc": "DOC-LS-B1"},
+    {"id": "LS-B2", "building_id": "B-2", "status": "presale_permitted", "status_name": "期房在售", "published_by": "ORG-HC", "published_at": "2022-11-01", "evidence_doc": "DOC-LS-B2"},
+    {"id": "LS-B3", "building_id": "B-3", "status": "existing_visible", "status_name": "现房可售（已竣工验收备案）", "published_by": "ORG-HC", "published_at": "2024-09-10", "evidence_doc": "DOC-LS-B3"},
+    {"id": "LS-B4", "building_id": "B-4", "status": "existing_visible", "status_name": "现房可售（已竣工验收备案）", "published_by": "ORG-HC", "published_at": "2024-10-25", "evidence_doc": "DOC-LS-B4"},
+    {"id": "LS-B5", "building_id": "B-5", "status": "construction_not_salable", "status_name": "在建不可售", "published_by": "ORG-HC", "published_at": "2025-05-20", "evidence_doc": "DOC-LS-B5"}
+  ],
+
+  "contracts": [
+    {"id": "C-101", "unit_id": "U-101", "buyer_id": "BY-101", "type": "presale", "signed_at": "2023-05-08", "fund_rule_regime_id": "REG-2020", "price_cny": 10000000, "receipt_entry_ids": ["E-1001", "E-1002"], "status": "active"},
+    {"id": "C-102", "unit_id": "U-102", "buyer_id": "BY-102", "type": "presale", "signed_at": "2023-08-10", "fund_rule_regime_id": "REG-2020", "price_cny": 9500000, "receipt_entry_ids": ["E-1003"], "status": "canceled", "canceled_at": "2024-01-15", "refund_entry_ids": ["E-1106"]},
+    {"id": "C-201", "unit_id": "U-201", "buyer_id": "BY-201", "type": "presale", "signed_at": "2023-11-12", "fund_rule_regime_id": "REG-2020", "price_cny": 9800000, "receipt_entry_ids": ["E-1005", "E-1006"], "status": "active"},
+    {"id": "C-301", "unit_id": "U-301", "buyer_id": "BY-301", "type": "existing", "signed_at": "2025-02-15", "fund_rule_regime_id": "REG-2024", "price_cny": 5000000, "receipt_entry_ids": ["E-2001"], "status": "delivered", "delivery_evidence_id": "DV-301"},
+    {"id": "C-401", "unit_id": "U-401", "buyer_id": "BY-401", "type": "existing", "signed_at": "2025-04-08", "fund_rule_regime_id": "REG-2024", "price_cny": 4800000, "receipt_entry_ids": ["E-2002"], "status": "delivered", "delivery_evidence_id": "DV-401"}
+  ],
+
+  "delivery_evidence": [
+    {
+      "id": "DV-301", "unit_id": "U-301",
+      "docs": [
+        {"kind": "completion_filing", "doc_id": "DOC-FIL-B3", "issued_by": "ORG-HC", "issued_at": "2024-09-02"},
+        {"kind": "unit_acceptance", "doc_id": "DOC-UA-301", "issued_by": "SUP-001", "issued_at": "2025-02-10"},
+        {"kind": "handover_keys", "doc_id": "DOC-HO-301", "issued_by": "SPV-001", "issued_at": "2025-02-16"}
+      ],
+      "listing_id": "LS-B3"
+    },
+    {
+      "id": "DV-401", "unit_id": "U-401",
+      "docs": [
+        {"kind": "completion_filing", "doc_id": "DOC-FIL-B4", "issued_by": "ORG-HC", "issued_at": "2024-10-18"},
+        {"kind": "unit_acceptance", "doc_id": "DOC-UA-401", "issued_by": "SUP-001", "issued_at": "2025-04-02"},
+        {"kind": "handover_keys", "doc_id": "DOC-HO-401", "issued_by": "SPV-001", "issued_at": "2025-04-09"}
+      ],
+      "listing_id": "LS-B4"
+    }
+  ],
+
+  "approvals": [
+    {
+      "id": "A-001", "kind": "node_disbursement", "building_id": "B-1", "basis_type": "verified_node", "basis_ref": "V-B1-02",
+      "payee_id": "GC-001", "amount_cny": 4000000, "requested_by": "SPV-001",
+      "parties": [
+        {"org_id": "SPV-001", "role": "项目公司申请", "decision": "approved", "decided_at": "2023-09-12"},
+        {"org_id": "SUP-001", "role": "监理核验节点", "decision": "approved", "decided_at": "2023-09-13"},
+        {"org_id": "ORG-HC", "role": "监管部门核准", "decision": "approved", "decided_at": "2023-09-15"},
+        {"org_id": "BANK-001", "role": "主办银行复核", "decision": "approved", "decided_at": "2023-09-18"}
+      ],
+      "status": "approved", "finalized_at": "2023-09-18"
+    },
+    {
+      "id": "A-002", "kind": "node_disbursement", "building_id": "B-2", "basis_type": "verified_node", "basis_ref": "V-B2-01",
+      "payee_id": "RP-001", "amount_cny": 3000000, "requested_by": "SPV-001",
+      "freeze_review_id": "FR-002",
+      "parties": [
+        {"org_id": "SPV-001", "role": "项目公司申请", "decision": "approved", "decided_at": "2024-06-01"},
+        {"org_id": "SUP-001", "role": "监理重新核验节点", "decision": "approved", "decided_at": "2024-06-18"},
+        {"org_id": "ORG-HC", "role": "监管部门关联交易复核", "decision": "approved", "decided_at": "2024-06-20"},
+        {"org_id": "BANK-001", "role": "主办银行复核", "decision": "approved", "decided_at": "2024-06-21"}
+      ],
+      "status": "approved", "finalized_at": "2024-06-21"
+    },
+    {
+      "id": "A-003", "kind": "hq_transfer", "building_id": null, "basis_type": "none", "basis_ref": null,
+      "payee_id": "HQ-001", "amount_cny": 9000000, "requested_by": "HQ-001",
+      "freeze_review_id": "FR-001",
+      "parties": [
+        {"org_id": "BANK-001", "role": "主办银行拦截并冻结复核", "decision": "rejected", "decided_at": "2025-04-10"},
+        {"org_id": "ORG-HC", "role": "监管部门认定无工程/法定义务依据", "decision": "rejected", "decided_at": "2025-04-12"}
+      ],
+      "status": "rejected", "finalized_at": "2025-04-12"
+    },
+    {
+      "id": "A-004", "kind": "statutory_disbursement", "building_id": null, "basis_type": "statutory_obligation", "basis_ref": "SO-001",
+      "payee_id": "STATE", "amount_cny": 1200000, "requested_by": "SPV-001",
+      "parties": [
+        {"org_id": "SPV-001", "role": "项目公司申报", "decision": "approved", "decided_at": "2025-04-09"},
+        {"org_id": "ORG-HC", "role": "监管部门核验法定义务", "decision": "approved", "decided_at": "2025-04-10"},
+        {"org_id": "BANK-001", "role": "主办银行复核", "decision": "approved", "decided_at": "2025-04-10"}
+      ],
+      "status": "approved", "finalized_at": "2025-04-10"
+    },
+    {
+      "id": "A-005", "kind": "refund", "building_id": "B-1", "basis_type": "contract_refund", "basis_ref": "C-102",
+      "payee_id": "BY-102", "amount_cny": 2500000, "requested_by": "SPV-001",
+      "parties": [
+        {"org_id": "SPV-001", "role": "项目公司退房申请", "decision": "approved", "decided_at": "2024-01-16"},
+        {"org_id": "BANK-001", "role": "主办银行原路退款复核", "decision": "approved", "decided_at": "2024-01-18"}
+      ],
+      "status": "approved", "finalized_at": "2024-01-18"
+    },
+    {
+      "id": "A-006", "kind": "node_disbursement", "building_id": "B-1", "basis_type": "verified_node", "basis_ref": "V-B1-03",
+      "payee_id": "GC-001", "amount_cny": 2000000, "requested_by": "TO-001",
+      "parties": [
+        {"org_id": "TO-001", "role": "接管主体申请", "decision": "approved", "decided_at": "2025-08-08"},
+        {"org_id": "SUP-001", "role": "监理核验节点", "decision": "approved", "decided_at": "2025-08-09"},
+        {"org_id": "ORG-HC", "role": "监管部门核准", "decision": "approved", "decided_at": "2025-08-11"},
+        {"org_id": "BANK-001", "role": "主办银行复核", "decision": "approved", "decided_at": "2025-08-12"}
+      ],
+      "status": "approved", "finalized_at": "2025-08-12"
+    }
+  ],
+
+  "blocked_payments": [
+    {
+      "id": "BP-001", "from_account_id": "ACC-SET-02", "to_account_id": "ACC-HQ-01", "to_actor_id": "HQ-001",
+      "amount_cny": 9000000, "attempted_at": "2025-04-10", "purpose": "总部资金调拨",
+      "basis_type": "none", "basis_ref": null, "approval_id": "A-003", "freeze_review_id": "FR-001",
+      "blocked_by": "BANK-001", "reason": "无已核验工程节点或法定义务依据，触发总部调拨冻结复核"
+    },
+    {
+      "id": "BP-002", "from_account_id": null, "to_account_id": null, "to_actor_id": null,
+      "amount_cny": 4600000, "attempted_at": "2025-08-20", "purpose": "将5号楼501包装为现房签约",
+      "basis_type": "none", "basis_ref": null, "approval_id": null, "freeze_review_id": null,
+      "blocked_by": "ORG-HC", "building_id": "B-5", "unit_id": "U-501",
+      "reason": "5号楼未竣工验收、未备案，公示状态为在建不可售，禁止现房销售"
+    }
+  ],
+
+  "freeze_reviews": [
+    {
+      "id": "FR-001", "trigger": "hq_transfer", "target_account_id": "ACC-SET-02",
+      "related_approval_id": "A-003", "related_blocked_payment_id": "BP-001",
+      "opened_at": "2025-04-10", "closed_at": "2025-05-20",
+      "outcome": "blocked_and_retained",
+      "note": "资金留存在项目公司账户，优先用于工程建设与法定支付；总部不得上收。"
+    },
+    {
+      "id": "FR-002", "trigger": "related_party_transaction", "target_account_id": "ACC-ESC-01",
+      "related_approval_id": "A-002",
+      "opened_at": "2024-06-02", "closed_at": "2024-06-20",
+      "outcome": "released_after_enhanced_review",
+      "conditions": ["关联交易价格比对市场价", "监理重新现场核验节点", "合同与发票留痕"],
+      "note": "增强复核通过后按已核验节点拨付。"
+    },
+    {
+      "id": "FR-003", "trigger": "off_account_repayment", "target_account_id": "ACC-ESC-01",
+      "related_clawback_entry_id": "E-1009",
+      "opened_at": "2025-03-05", "closed_at": "2025-03-20",
+      "outcome": "funds_returned_to_escrow",
+      "external_account_id": "ACC-MCH-HQ",
+      "note": "购房款刷入总部关联POS属账户外回款，责令原路缴回监管账户后冻结解除。"
+    }
+  ],
+
+  "risk_takeover": [
+    {
+      "id": "RT-001", "project_id": "PRJ-001", "declared_at": "2025-06-18",
+      "risk_level": "high", "declared_by": "ORG-HC", "takeover_entity_id": "TO-001",
+      "additional_approver_ids": ["TO-001"],
+      "effect": "接管之日起项目所有资金拨付须增加接管主体复核；监管账户继续保障工程建设，禁止总部调拨。"
+    }
+  ],
+
+  "ledger_entries": [
+    {"id": "E-1001", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 3000000, "value_date": "2023-05-10", "counterparty_id": "BY-101", "purpose": "C-101 首付款", "basis_type": "buyer_receipt", "basis_ref": "C-101", "contract_id": "C-101", "building_id": "B-1", "funds_source_id": "SRC-CARD-101"},
+    {"id": "E-1002", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 7000000, "value_date": "2023-05-20", "counterparty_id": "BANK-001", "purpose": "C-101 按揭贷款发放入笼", "basis_type": "buyer_receipt", "basis_ref": "C-101", "contract_id": "C-101", "building_id": "B-1", "funds_source_id": "SRC-LOAN-L101"},
+    {"id": "E-1003", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 2500000, "value_date": "2023-08-12", "counterparty_id": "BY-102", "purpose": "C-102 首付款", "basis_type": "buyer_receipt", "basis_ref": "C-102", "contract_id": "C-102", "building_id": "B-1", "funds_source_id": "SRC-CARD-102"},
+    {"id": "E-1005", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 6000000, "value_date": "2023-11-15", "counterparty_id": "BY-201", "purpose": "C-201 首付款", "basis_type": "buyer_receipt", "basis_ref": "C-201", "contract_id": "C-201", "building_id": "B-2", "funds_source_id": "SRC-CARD-201"},
+    {"id": "E-1006", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 3800000, "value_date": "2023-12-01", "counterparty_id": "BANK-001", "purpose": "C-201 按揭贷款发放入笼", "basis_type": "buyer_receipt", "basis_ref": "C-201", "contract_id": "C-201", "building_id": "B-2", "funds_source_id": "SRC-LOAN-L201"},
+    {"id": "E-1101", "account_id": "ACC-ESC-01", "direction": "out", "amount_cny": 4000000, "value_date": "2023-09-20", "counterparty_id": "GC-001", "purpose": "1号楼主体结构封顶进度款", "basis_type": "verified_node", "basis_ref": "V-B1-02", "approval_id": "A-001", "building_id": "B-1", "idempotency_key": "IDP-A-001"},
+    {"id": "E-1106", "account_id": "ACC-ESC-01", "direction": "out", "amount_cny": 2500000, "value_date": "2024-01-20", "counterparty_id": "BY-102", "purpose": "C-102 退房原路退款", "basis_type": "contract_refund", "basis_ref": "C-102", "approval_id": "A-005", "contract_id": "C-102", "building_id": "B-1", "original_receipt_id": "E-1003", "refund_target_source_id": "SRC-CARD-102"},
+    {"id": "E-1102", "account_id": "ACC-ESC-01", "direction": "out", "amount_cny": 3000000, "value_date": "2024-06-25", "counterparty_id": "RP-001", "purpose": "2号楼基础节点进度款（关联总包）", "basis_type": "verified_node", "basis_ref": "V-B2-01", "approval_id": "A-002", "building_id": "B-2", "idempotency_key": "IDP-A-002", "freeze_review_id": "FR-002"},
+    {"id": "E-1009", "account_id": "ACC-ESC-01", "direction": "in", "amount_cny": 800000, "value_date": "2025-03-20", "counterparty_id": "ACC-MCH-HQ", "purpose": "账户外回款追缴入笼（FR-003）", "basis_type": "freeze_clawback", "basis_ref": "FR-003", "freeze_review_id": "FR-003", "building_id": "B-2"},
+    {"id": "E-2001", "account_id": "ACC-NEW-01", "direction": "in", "amount_cny": 5000000, "value_date": "2025-02-18", "counterparty_id": "BY-301", "purpose": "C-301 现房购房款（交付时结清）", "basis_type": "buyer_receipt", "basis_ref": "C-301", "contract_id": "C-301", "building_id": "B-3", "funds_source_id": "SRC-MIX-301"},
+    {"id": "E-1104", "account_id": "ACC-ESC-01", "direction": "out", "amount_cny": 1200000, "value_date": "2025-04-12", "counterparty_id": "STATE", "purpose": "缴纳增值税及附加（法定义务）", "basis_type": "statutory_obligation", "basis_ref": "SO-001", "approval_id": "A-004", "idempotency_key": "IDP-A-004"},
+    {"id": "E-2002", "account_id": "ACC-NEW-01", "direction": "in", "amount_cny": 4800000, "value_date": "2025-04-10", "counterparty_id": "BY-401", "purpose": "C-401 现房购房款（交付时结清）", "basis_type": "buyer_receipt", "basis_ref": "C-401", "contract_id": "C-401", "building_id": "B-4", "funds_source_id": "SRC-MIX-401"},
+    {"id": "E-1300", "account_id": "ACC-NEW-01", "direction": "out", "amount_cny": 9800000, "value_date": "2025-04-20", "counterparty_id": "SPV-001", "purpose": "3、4号楼竣工后现房资金项目内划转（划出）", "basis_type": "completion_release", "basis_ref": "DOC-FIL-B3", "building_ids": ["B-3", "B-4"], "transfer_pair_id": "TP-001", "transfer_to_account_id": "ACC-SET-02"},
+    {"id": "E-1301", "account_id": "ACC-SET-02", "direction": "in", "amount_cny": 9800000, "value_date": "2025-04-20", "counterparty_id": "SPV-001", "purpose": "3、4号楼竣工后现房资金项目内划转（划入）", "basis_type": "completion_release", "basis_ref": "DOC-FIL-B3", "building_ids": ["B-3", "B-4"], "transfer_pair_id": "TP-001", "transfer_from_account_id": "ACC-NEW-01"},
+    {"id": "E-1105", "account_id": "ACC-ESC-01", "direction": "out", "amount_cny": 2000000, "value_date": "2025-08-15", "counterparty_id": "GC-001", "purpose": "1号楼安装装饰节点进度款（接管期）", "basis_type": "verified_node", "basis_ref": "V-B1-03", "approval_id": "A-006", "building_id": "B-1", "idempotency_key": "IDP-A-006"}
+  ],
+
+  "bank_callbacks": [
+    {"id": "CB-001", "approval_id": "A-001", "idempotency_key": "IDP-A-001", "delivered_at": "2023-09-20", "result": "paid", "payload_hash": "hcb-001"},
+    {"id": "CB-002", "approval_id": "A-001", "idempotency_key": "IDP-A-001", "delivered_at": "2023-09-21", "result": "paid", "payload_hash": "hcb-001", "note": "银行重复回调，与 CB-001 同键，只允许入账一次"},
+    {"id": "CB-003", "approval_id": "A-002", "idempotency_key": "IDP-A-002", "delivered_at": "2024-06-25", "result": "paid", "payload_hash": "hcb-002"},
+    {"id": "CB-004", "approval_id": "A-006", "idempotency_key": "IDP-A-006", "delivered_at": "2025-08-15", "result": "paid", "payload_hash": "hcb-006"}
+  ],
+
+  "audit": {
+    "audit_id": "AUD-PRJ001-MULTIYEAR",
+    "fiscal_years": [2023, 2024, 2025],
+    "sealed_periods": [
+      {"year": 2023, "sealed": true, "entry_ids": ["E-1001", "E-1002", "E-1003", "E-1005", "E-1006", "E-1101"]},
+      {"year": 2024, "sealed": true, "entry_ids": ["E-1106", "E-1102"]}
+    ],
+    "open_year": 2025,
+    "open_year_balance_signed_cny": 7400000,
+    "note": "封存期按入账金额代数和固化：收入为正、支出为负。多年审计须与台账逐笔一致。"
+  }
 }

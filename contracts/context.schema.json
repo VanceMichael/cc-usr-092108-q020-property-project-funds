@@ -1,49 +1,428 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "领域上下文",
+  "title": "房地产项目资金隔离领域资料",
   "type": "object",
   "required": [
     "domain",
     "version",
     "sample_id",
     "actors",
-    "facts",
-    "constraints"
+    "regimes",
+    "projects",
+    "accounts",
+    "construction_nodes",
+    "node_verifications",
+    "contracts",
+    "approvals",
+    "ledger_entries",
+    "freeze_reviews"
   ],
   "properties": {
-    "domain": {
-      "type": "string",
-      "minLength": 1
-    },
-    "version": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "sample_id": {
-      "type": "string",
-      "minLength": 1
-    },
-    "actors": {
+    "domain": {"const": "property-project-funds"},
+    "version": {"type": "integer", "minimum": 2},
+    "sample_id": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+
+    "regimes": {
       "type": "array",
       "minItems": 1,
-      "items": {
-        "type": "string"
-      }
+      "items": {"$ref": "#/$defs/regime"}
     },
-    "facts": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string"
-      }
-    },
-    "constraints": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "type": "string"
-      }
-    }
+    "policy_changes": {"type": "array", "items": {"$ref": "#/$defs/policyChange"}},
+    "actors": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/actor"}},
+    "projects": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/project"}},
+    "units": {"type": "array", "items": {"$ref": "#/$defs/unit"}},
+    "accounts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/account"}},
+    "construction_nodes": {"type": "array", "items": {"$ref": "#/$defs/node"}},
+    "node_verifications": {"type": "array", "items": {"$ref": "#/$defs/verification"}},
+    "statutory_obligations": {"type": "array", "items": {"$ref": "#/$defs/obligation"}},
+    "listings": {"type": "array", "items": {"$ref": "#/$defs/listing"}},
+    "contracts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/contract"}},
+    "delivery_evidence": {"type": "array", "items": {"$ref": "#/$defs/deliveryEvidence"}},
+    "approvals": {"type": "array", "items": {"$ref": "#/$defs/approval"}},
+    "blocked_payments": {"type": "array", "items": {"$ref": "#/$defs/blockedPayment"}},
+    "freeze_reviews": {"type": "array", "items": {"$ref": "#/$defs/freezeReview"}},
+    "risk_takeover": {"type": "array", "items": {"$ref": "#/$defs/takeover"}},
+    "ledger_entries": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/entry"}},
+    "bank_callbacks": {"type": "array", "items": {"$ref": "#/$defs/callback"}},
+    "audit": {"$ref": "#/$defs/audit"}
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+
+  "$defs": {
+    "regime": {
+      "type": "object",
+      "required": ["id", "name", "effective_from", "rules"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "effective_from": {"type": "string", "format": "date"},
+        "rules": {"type": "object", "additionalProperties": {"type": "boolean"}}
+      },
+      "additionalProperties": false
+    },
+    "policyChange": {
+      "type": "object",
+      "required": ["id", "new_regime_id", "changed_at", "retroactive"],
+      "properties": {
+        "id": {"type": "string"},
+        "new_regime_id": {"type": "string"},
+        "changed_at": {"type": "string", "format": "date"},
+        "retroactive": {"const": false},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "actor": {
+      "type": "object",
+      "required": ["id", "kind", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string", "enum": [
+          "authority", "bank", "supervisor", "project_company", "group_hq",
+          "contractor", "contractor_related", "takeover_entity", "treasury", "buyer"
+        ]},
+        "name": {"type": "string"},
+        "parent_id": {"type": "string"},
+        "related_to": {"type": "string"},
+        "independent_ledger_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "company_id", "lead_bank_id", "ledger_id", "parcels", "buildings"],
+      "properties": {
+        "id": {"type": "string"},
+        "name": {"type": "string"},
+        "company_id": {"type": "string"},
+        "lead_bank_id": {"type": "string"},
+        "ledger_id": {"type": "string"},
+        "parcels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name"],
+            "properties": {
+              "id": {"type": "string"},
+              "name": {"type": "string"},
+              "land_use_cert": {"type": "string"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "buildings": {"type": "array", "items": {"$ref": "#/$defs/building"}}
+      },
+      "additionalProperties": false
+    },
+    "building": {
+      "type": "object",
+      "required": ["id", "parcel_id", "name", "sale_mode", "supervised_quota_cny", "completion_filing_id"],
+      "properties": {
+        "id": {"type": "string"},
+        "parcel_id": {"type": "string"},
+        "name": {"type": "string"},
+        "presale_permit_id": {"type": ["string", "null"]},
+        "sale_mode": {"type": "string", "enum": ["presale", "existing", "construction_only"]},
+        "supervised_quota_cny": {"type": "integer", "minimum": 0},
+        "completion_filing_id": {"type": ["string", "null"]},
+        "completion_filing_at": {"type": ["string", "null"], "format": "date"},
+        "planned_delivery": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "unit": {
+      "type": "object",
+      "required": ["id", "building_id", "room"],
+      "properties": {
+        "id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "room": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "account": {
+      "type": "object",
+      "required": ["id", "bank_id", "holder_id", "type", "name"],
+      "properties": {
+        "id": {"type": "string"},
+        "bank_id": {"type": "string"},
+        "holder_id": {"type": "string"},
+        "type": {"type": "string", "enum": [
+          "presale_escrow", "existing_sale_settlement", "general_settlement",
+          "external_hq", "external_contractor", "treasury",
+          "external_merchant", "buyer_card"
+        ]},
+        "name": {"type": "string"},
+        "project_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "building_id", "name", "weight"],
+      "properties": {
+        "id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "name": {"type": "string"},
+        "weight": {"type": "number", "exclusiveMinimum": 0, "maximum": 1}
+      },
+      "additionalProperties": false
+    },
+    "verification": {
+      "type": "object",
+      "required": ["id", "node_id", "verified_at", "verifiers", "report_doc"],
+      "properties": {
+        "id": {"type": "string"},
+        "node_id": {"type": "string"},
+        "verified_at": {"type": "string", "format": "date"},
+        "verifiers": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "report_doc": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "obligation": {
+      "type": "object",
+      "required": ["id", "kind", "name", "amount_due_cny", "due_at", "payee_account_id"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string", "enum": ["tax", "fee", "statutory"]},
+        "name": {"type": "string"},
+        "amount_due_cny": {"type": "integer", "minimum": 0},
+        "due_at": {"type": "string", "format": "date"},
+        "payee_account_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "listing": {
+      "type": "object",
+      "required": ["id", "building_id", "status", "published_by", "published_at"],
+      "properties": {
+        "id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "status": {"type": "string", "enum": [
+          "presale_permitted", "existing_visible", "construction_not_salable"
+        ]},
+        "status_name": {"type": "string"},
+        "published_by": {"type": "string"},
+        "published_at": {"type": "string", "format": "date"},
+        "evidence_doc": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "contract": {
+      "type": "object",
+      "required": ["id", "unit_id", "buyer_id", "type", "signed_at", "fund_rule_regime_id", "price_cny", "status"],
+      "properties": {
+        "id": {"type": "string"},
+        "unit_id": {"type": "string"},
+        "buyer_id": {"type": "string"},
+        "type": {"type": "string", "enum": ["presale", "existing"]},
+        "signed_at": {"type": "string", "format": "date"},
+        "fund_rule_regime_id": {"type": "string"},
+        "price_cny": {"type": "integer", "minimum": 0},
+        "receipt_entry_ids": {"type": "array", "items": {"type": "string"}},
+        "status": {"type": "string", "enum": ["active", "delivered", "canceled"]},
+        "canceled_at": {"type": "string", "format": "date"},
+        "refund_entry_ids": {"type": "array", "items": {"type": "string"}},
+        "delivery_evidence_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "deliveryEvidence": {
+      "type": "object",
+      "required": ["id", "unit_id", "docs", "listing_id"],
+      "properties": {
+        "id": {"type": "string"},
+        "unit_id": {"type": "string"},
+        "docs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["kind", "doc_id", "issued_by", "issued_at"],
+            "properties": {
+              "kind": {"type": "string", "enum": [
+                "completion_filing", "unit_acceptance", "handover_keys"
+              ]},
+              "doc_id": {"type": "string"},
+              "issued_by": {"type": "string"},
+              "issued_at": {"type": "string", "format": "date"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "listing_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "approval": {
+      "type": "object",
+      "required": ["id", "kind", "basis_type", "parties", "status"],
+      "properties": {
+        "id": {"type": "string"},
+        "kind": {"type": "string", "enum": [
+          "node_disbursement", "statutory_disbursement", "hq_transfer", "refund"
+        ]},
+        "building_id": {"type": ["string", "null"]},
+        "basis_type": {"type": ["string", "null"], "enum": [
+          "verified_node", "statutory_obligation", "contract_refund", "none", null
+        ]},
+        "basis_ref": {"type": ["string", "null"]},
+        "payee_id": {"type": ["string", "null"]},
+        "amount_cny": {"type": "integer", "minimum": 0},
+        "requested_by": {"type": "string"},
+        "freeze_review_id": {"type": "string"},
+        "parties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["org_id", "role", "decision"],
+            "properties": {
+              "org_id": {"type": "string"},
+              "role": {"type": "string"},
+              "decision": {"type": "string", "enum": ["approved", "rejected", "pending"]},
+              "decided_at": {"type": "string", "format": "date"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "status": {"type": "string", "enum": ["approved", "rejected", "pending"]},
+        "finalized_at": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    },
+    "blockedPayment": {
+      "type": "object",
+      "required": ["id", "amount_cny", "attempted_at", "purpose", "basis_type", "blocked_by", "reason"],
+      "properties": {
+        "id": {"type": "string"},
+        "from_account_id": {"type": ["string", "null"]},
+        "to_account_id": {"type": ["string", "null"]},
+        "to_actor_id": {"type": ["string", "null"]},
+        "amount_cny": {"type": "integer", "minimum": 0},
+        "attempted_at": {"type": "string", "format": "date"},
+        "purpose": {"type": "string"},
+        "basis_type": {"type": "string"},
+        "basis_ref": {"type": ["string", "null"]},
+        "approval_id": {"type": ["string", "null"]},
+        "freeze_review_id": {"type": ["string", "null"]},
+        "blocked_by": {"type": "string"},
+        "building_id": {"type": "string"},
+        "unit_id": {"type": "string"},
+        "reason": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "freezeReview": {
+      "type": "object",
+      "required": ["id", "trigger", "opened_at", "outcome"],
+      "properties": {
+        "id": {"type": "string"},
+        "trigger": {"type": "string", "enum": [
+          "hq_transfer", "related_party_transaction", "off_account_repayment"
+        ]},
+        "target_account_id": {"type": "string"},
+        "related_approval_id": {"type": "string"},
+        "related_blocked_payment_id": {"type": "string"},
+        "related_clawback_entry_id": {"type": "string"},
+        "external_account_id": {"type": "string"},
+        "opened_at": {"type": "string", "format": "date"},
+        "closed_at": {"type": ["string", "null"], "format": "date"},
+        "outcome": {"type": "string", "enum": [
+          "blocked_and_retained", "released_after_enhanced_review",
+          "funds_returned_to_escrow"
+        ]},
+        "conditions": {"type": "array", "items": {"type": "string"}},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "takeover": {
+      "type": "object",
+      "required": ["id", "project_id", "declared_at", "risk_level", "declared_by", "takeover_entity_id", "effect"],
+      "properties": {
+        "id": {"type": "string"},
+        "project_id": {"type": "string"},
+        "declared_at": {"type": "string", "format": "date"},
+        "risk_level": {"type": "string", "enum": ["low", "medium", "high"]},
+        "declared_by": {"type": "string"},
+        "takeover_entity_id": {"type": "string"},
+        "additional_approver_ids": {"type": "array", "items": {"type": "string"}},
+        "effect": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "entry": {
+      "type": "object",
+      "required": ["id", "account_id", "direction", "amount_cny", "value_date", "purpose", "basis_type"],
+      "properties": {
+        "id": {"type": "string"},
+        "account_id": {"type": "string"},
+        "direction": {"type": "string", "enum": ["in", "out"]},
+        "amount_cny": {"type": "integer", "minimum": 0},
+        "value_date": {"type": "string", "format": "date"},
+        "counterparty_id": {"type": "string"},
+        "purpose": {"type": "string"},
+        "basis_type": {"type": "string", "enum": [
+          "buyer_receipt", "verified_node", "statutory_obligation",
+          "contract_refund", "completion_release", "freeze_clawback", "hq_transfer"
+        ]},
+        "basis_ref": {"type": "string"},
+        "approval_id": {"type": "string"},
+        "contract_id": {"type": "string"},
+        "building_id": {"type": "string"},
+        "building_ids": {"type": "array", "items": {"type": "string"}},
+        "funds_source_id": {"type": "string"},
+        "idempotency_key": {"type": "string"},
+        "freeze_review_id": {"type": "string"},
+        "original_receipt_id": {"type": "string"},
+        "refund_target_source_id": {"type": "string"},
+        "transfer_pair_id": {"type": "string"},
+        "transfer_from_account_id": {"type": "string"},
+        "transfer_to_account_id": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "callback": {
+      "type": "object",
+      "required": ["id", "approval_id", "idempotency_key", "delivered_at", "result"],
+      "properties": {
+        "id": {"type": "string"},
+        "approval_id": {"type": "string"},
+        "idempotency_key": {"type": "string"},
+        "delivered_at": {"type": "string", "format": "date"},
+        "result": {"type": "string", "enum": ["paid", "failed", "pending"]},
+        "payload_hash": {"type": "string"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "audit": {
+      "type": "object",
+      "required": ["audit_id", "fiscal_years", "sealed_periods", "open_year"],
+      "properties": {
+        "audit_id": {"type": "string"},
+        "fiscal_years": {"type": "array", "items": {"type": "integer"}},
+        "sealed_periods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["year", "sealed", "entry_ids"],
+            "properties": {
+              "year": {"type": "integer"},
+              "sealed": {"const": true},
+              "entry_ids": {"type": "array", "items": {"type": "string"}},
+              "signed_total_cny": {"type": "integer"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "open_year": {"type": "integer"},
+        "open_year_balance_signed_cny": {"type": "integer"},
+        "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  }
 }
