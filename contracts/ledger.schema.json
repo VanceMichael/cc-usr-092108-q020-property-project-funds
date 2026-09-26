@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "房地产项目资金隔离台账",
+  "description": "项目公司独立账、地块楼栋、收支账户、监管额度与销售交付之间的后台关系。跨字段一致性（付款对应已核验工程、冻结复核、哈希链等）由 src/ledger.py 校验。",
+  "type": "object",
+  "required": [
+    "as_of", "policies", "project", "company", "parcels", "buildings",
+    "units", "milestones", "obligations", "accounts", "payees",
+    "contracts", "receipts", "payments", "approvals", "callbacks",
+    "freeze_reviews", "takeovers", "deliveries", "audit_events"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "as_of": { "type": "string", "format": "date" },
+    "policies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "effective_from", "presale_allowed",
+                     "finished_sale_allowed", "supervision_ratio"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "effective_from": { "type": "string", "format": "date" },
+          "presale_allowed": { "type": "boolean" },
+          "finished_sale_allowed": { "type": "boolean" },
+          "supervision_ratio": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "project": {
+      "type": "object",
+      "required": ["id", "name", "company_id"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "company_id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "company": {
+      "type": "object",
+      "required": ["id", "name", "type"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "const": "project_company" },
+        "hq_name": { "type": "string" }
+      }
+    },
+    "parcels": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "project_id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "project_id": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "buildings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "parcel_id", "acceptance"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "parcel_id": { "type": "string", "minLength": 1 },
+          "acceptance": {
+            "type": ["object", "null"],
+            "required": ["date", "doc_ref"],
+            "additionalProperties": false,
+            "properties": {
+              "date": { "type": "string", "format": "date" },
+              "doc_ref": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "building_id", "visible_status", "listed_at"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "building_id": { "type": "string", "minLength": 1 },
+          "visible_status": { "enum": ["listed", "unlisted", "sold"] },
+          "listed_at": { "type": ["string", "null"], "format": "date" }
+        }
+      }
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "building_id", "budget_cap",
+                     "certified_by", "certified_date", "certificate_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "building_id": { "type": "string", "minLength": 1 },
+          "budget_cap": { "type": "integer", "exclusiveMinimum": 0 },
+          "certified_by": { "type": ["string", "null"] },
+          "certified_date": { "type": ["string", "null"], "format": "date" },
+          "certificate_ref": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "project_id", "payee_id", "amount", "due_date"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "project_id": { "type": "string", "minLength": 1 },
+          "payee_id": { "type": "string", "minLength": 1 },
+          "amount": { "type": "integer", "exclusiveMinimum": 0 },
+          "due_date": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "accounts": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "kind", "bank", "owner_company_id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "kind": { "enum": ["supervised", "general", "external"] },
+          "bank": { "type": "string", "minLength": 1 },
+          "owner_company_id": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "payees": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "is_hq", "related"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string", "minLength": 1 },
+          "is_hq": { "type": "boolean" },
+          "related": { "type": "boolean" }
+        }
+      }
+    },
+    "contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "unit_id", "buyer", "sign_date", "price",
+                     "sale_kind", "status", "presale_approval", "policy_id"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "unit_id": { "type": "string", "minLength": 1 },
+          "buyer": { "type": "string", "minLength": 1 },
+          "sign_date": { "type": "string", "format": "date" },
+          "price": { "type": "integer", "exclusiveMinimum": 0 },
+          "sale_kind": { "enum": ["presale", "finished"] },
+          "status": { "enum": ["active", "performed", "rescinded"] },
+          "presale_approval": { "type": ["string", "null"] },
+          "policy_id": { "type": "string", "minLength": 1 },
+          "rescinded_date": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "receipts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "kind", "account_id", "amount",
+                     "supervised_amount", "general_amount",
+                     "off_account", "bank_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" },
+          "kind": { "enum": ["sale", "loan", "correction"] },
+          "contract_id": { "type": "string" },
+          "corrects": { "type": "string" },
+          "account_id": { "type": "string", "minLength": 1 },
+          "amount": { "type": "integer", "exclusiveMinimum": 0 },
+          "supervised_amount": { "type": "integer", "minimum": 0 },
+          "general_amount": { "type": "integer", "minimum": 0 },
+          "off_account": { "type": "boolean" },
+          "bank_ref": { "type": "string", "minLength": 1 },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "payments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "type", "account_id", "payee_id",
+                     "amount", "status", "purpose"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" },
+          "type": { "enum": ["milestone", "obligation", "refund",
+                             "hq_transfer", "related_party"] },
+          "account_id": { "type": "string", "minLength": 1 },
+          "payee_id": { "type": "string", "minLength": 1 },
+          "amount": { "type": "integer", "exclusiveMinimum": 0 },
+          "status": { "enum": ["executed", "rejected", "frozen"] },
+          "milestone_id": { "type": "string" },
+          "obligation_id": { "type": "string" },
+          "contract_id": { "type": "string" },
+          "purpose": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "payment_id", "role", "actor", "decision", "date"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "payment_id": { "type": "string", "minLength": 1 },
+          "role": { "enum": ["developer", "supervisor", "bank", "committee"] },
+          "actor": { "type": "string", "minLength": 1 },
+          "decision": { "enum": ["approve", "reject"] },
+          "date": { "type": "string", "format": "date" }
+        }
+      }
+    },
+    "callbacks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "payment_id", "bank_ref", "date", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "payment_id": { "type": "string", "minLength": 1 },
+          "bank_ref": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" },
+          "status": { "enum": ["applied", "ignored_duplicate"] },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "freeze_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "trigger", "opened_date", "closed_date",
+                     "result", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "trigger": { "enum": ["hq_transfer", "related_party",
+                                "off_account_receipt", "takeover"] },
+          "payment_id": { "type": "string" },
+          "receipt_id": { "type": "string" },
+          "opened_date": { "type": "string", "format": "date" },
+          "closed_date": { "type": ["string", "null"], "format": "date" },
+          "result": { "enum": ["rejected", "returned", "released", "pending"] },
+          "reason": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "takeovers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "authority", "reason", "start_date",
+                     "end_date", "permission"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "authority": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "start_date": { "type": "string", "format": "date" },
+          "end_date": { "type": ["string", "null"], "format": "date" },
+          "permission": { "enum": ["normal", "committee_only", "frozen"] }
+        }
+      }
+    },
+    "deliveries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "contract_id", "date", "evidence_ref"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "contract_id": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" },
+          "evidence_ref": { "type": "string", "minLength": 1 },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "audit_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "date", "actor", "action", "prev_hash", "hash"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "date": { "type": "string", "format": "date" },
+          "actor": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "minLength": 1 },
+          "prev_hash": { "type": "string", "minLength": 1 },
+          "hash": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

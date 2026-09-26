@@ -1,0 +1,1113 @@
+{
+  "as_of": "2026-09-20",
+  "policies": [
+    {
+      "id": "P-2023",
+      "effective_from": "2023-06-01",
+      "presale_allowed": true,
+      "finished_sale_allowed": true,
+      "supervision_ratio": 60,
+      "note": "预售与现售并行，预售款重点监管比例 60%"
+    },
+    {
+      "id": "P-2025",
+      "effective_from": "2025-01-01",
+      "presale_allowed": false,
+      "finished_sale_allowed": true,
+      "supervision_ratio": 80,
+      "note": "新项目优先现房销售，预售款监管比例提高至 80%；旧合同不追溯"
+    }
+  ],
+  "project": {
+    "id": "PRJ-YXY",
+    "name": "云栖苑",
+    "company_id": "CO-YXY"
+  },
+  "company": {
+    "id": "CO-YXY",
+    "name": "云栖苑置业有限公司",
+    "type": "project_company",
+    "hq_name": "云栖建设集团有限公司"
+  },
+  "parcels": [
+    {
+      "id": "LOT-A",
+      "name": "云栖苑 A 地块",
+      "project_id": "PRJ-YXY"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "BLD-1",
+      "name": "云栖苑 1 号楼",
+      "parcel_id": "LOT-A",
+      "acceptance": {
+        "date": "2025-09-15",
+        "doc_ref": "JGBA-2025-0915-01"
+      }
+    },
+    {
+      "id": "BLD-2",
+      "name": "云栖苑 2 号楼",
+      "parcel_id": "LOT-A",
+      "acceptance": null
+    }
+  ],
+  "units": [
+    {
+      "id": "UNIT-101",
+      "name": "1 号楼 101 室",
+      "building_id": "BLD-1",
+      "visible_status": "listed",
+      "listed_at": "2025-09-20"
+    },
+    {
+      "id": "UNIT-102",
+      "name": "1 号楼 102 室",
+      "building_id": "BLD-1",
+      "visible_status": "listed",
+      "listed_at": "2025-09-20"
+    },
+    {
+      "id": "UNIT-201",
+      "name": "2 号楼 201 室",
+      "building_id": "BLD-2",
+      "visible_status": "unlisted",
+      "listed_at": null
+    }
+  ],
+  "milestones": [
+    {
+      "id": "MS-101",
+      "name": "1 号楼主体结构封顶",
+      "building_id": "BLD-1",
+      "budget_cap": 30000000,
+      "certified_by": "江南工程监理有限公司",
+      "certified_date": "2024-05-20",
+      "certificate_ref": "JL-2024-0520-1"
+    },
+    {
+      "id": "MS-102",
+      "name": "1 号楼竣工节点",
+      "building_id": "BLD-1",
+      "budget_cap": 15000000,
+      "certified_by": "江南工程监理有限公司",
+      "certified_date": "2025-09-10",
+      "certificate_ref": "JL-2025-0910-2"
+    },
+    {
+      "id": "MS-201",
+      "name": "2 号楼主体结构封顶",
+      "building_id": "BLD-2",
+      "budget_cap": 28000000,
+      "certified_by": "江南工程监理有限公司",
+      "certified_date": "2026-01-18",
+      "certificate_ref": "JL-2026-0118-3"
+    },
+    {
+      "id": "MS-202",
+      "name": "2 号楼竣工节点",
+      "building_id": "BLD-2",
+      "budget_cap": 14000000,
+      "certified_by": null,
+      "certified_date": null,
+      "certificate_ref": null
+    }
+  ],
+  "obligations": [
+    {
+      "id": "OBL-TAX",
+      "name": "增值税及附加申报缴纳",
+      "project_id": "PRJ-YXY",
+      "payee_id": "PAY-TAX",
+      "amount": 1200000,
+      "due_date": "2024-06-15"
+    },
+    {
+      "id": "OBL-WAGE",
+      "name": "农民工工资专户拨付",
+      "project_id": "PRJ-YXY",
+      "payee_id": "PAY-WAGE",
+      "amount": 2000000,
+      "due_date": "2025-01-20"
+    }
+  ],
+  "accounts": [
+    {
+      "id": "ACC-S",
+      "name": "云栖苑预售资金监管专户",
+      "kind": "supervised",
+      "bank": "滨江银行云栖支行",
+      "owner_company_id": "CO-YXY",
+      "closing_balance": 650000
+    },
+    {
+      "id": "ACC-G",
+      "name": "云栖苑置业一般结算户",
+      "kind": "general",
+      "bank": "滨江银行云栖支行",
+      "owner_company_id": "CO-YXY",
+      "closing_balance": 200000
+    },
+    {
+      "id": "ACC-X",
+      "name": "云栖建设集团总部账户",
+      "kind": "external",
+      "bank": "其他银行",
+      "owner_company_id": "CO-HQ",
+      "closing_balance": 0
+    }
+  ],
+  "payees": [
+    {
+      "id": "PAY-GC",
+      "name": "云建总包有限公司",
+      "is_hq": false,
+      "related": false
+    },
+    {
+      "id": "PAY-TAX",
+      "name": "主管税务机关",
+      "is_hq": false,
+      "related": false
+    },
+    {
+      "id": "PAY-WAGE",
+      "name": "农民工工资专户（银行托管）",
+      "is_hq": false,
+      "related": false
+    },
+    {
+      "id": "PAY-HQ",
+      "name": "云栖建设集团有限公司",
+      "is_hq": true,
+      "related": true
+    },
+    {
+      "id": "PAY-RP",
+      "name": "云栖建材贸易有限公司",
+      "is_hq": false,
+      "related": true
+    },
+    {
+      "id": "PAY-BUYER3",
+      "name": "韩梅（购房人）",
+      "is_hq": false,
+      "related": false
+    }
+  ],
+  "contracts": [
+    {
+      "id": "CT-001",
+      "unit_id": "UNIT-201",
+      "buyer": "周岚",
+      "sign_date": "2024-03-10",
+      "price": 2000000,
+      "sale_kind": "presale",
+      "status": "active",
+      "presale_approval": "YZS-2024-007",
+      "policy_id": "P-2023"
+    },
+    {
+      "id": "CT-002",
+      "unit_id": "UNIT-101",
+      "buyer": "林舟",
+      "sign_date": "2025-10-08",
+      "price": 3000000,
+      "sale_kind": "finished",
+      "status": "performed",
+      "presale_approval": null,
+      "policy_id": "P-2025"
+    },
+    {
+      "id": "CT-003",
+      "unit_id": "UNIT-102",
+      "buyer": "韩梅",
+      "sign_date": "2025-11-02",
+      "price": 2800000,
+      "sale_kind": "finished",
+      "status": "rescinded",
+      "presale_approval": null,
+      "policy_id": "P-2025",
+      "rescinded_date": "2026-02-15"
+    }
+  ],
+  "receipts": [
+    {
+      "id": "RC-001",
+      "date": "2024-01-15",
+      "kind": "loan",
+      "account_id": "ACC-G",
+      "amount": 50000000,
+      "supervised_amount": 0,
+      "general_amount": 50000000,
+      "off_account": false,
+      "bank_ref": "BK-LOAN-20240115",
+      "note": "开发贷发放至项目公司一般户"
+    },
+    {
+      "id": "RC-002",
+      "date": "2024-03-12",
+      "kind": "sale",
+      "contract_id": "CT-001",
+      "account_id": "ACC-S",
+      "amount": 360000,
+      "supervised_amount": 360000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20240312-01"
+    },
+    {
+      "id": "RC-003",
+      "date": "2024-03-12",
+      "kind": "sale",
+      "contract_id": "CT-001",
+      "account_id": "ACC-G",
+      "amount": 240000,
+      "supervised_amount": 0,
+      "general_amount": 240000,
+      "off_account": false,
+      "bank_ref": "BK-20240312-02"
+    },
+    {
+      "id": "RC-004",
+      "date": "2024-06-01",
+      "kind": "sale",
+      "contract_id": "CT-001",
+      "account_id": "ACC-S",
+      "amount": 840000,
+      "supervised_amount": 840000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20240601-01"
+    },
+    {
+      "id": "RC-005",
+      "date": "2024-06-01",
+      "kind": "sale",
+      "contract_id": "CT-001",
+      "account_id": "ACC-G",
+      "amount": 560000,
+      "supervised_amount": 0,
+      "general_amount": 560000,
+      "off_account": false,
+      "bank_ref": "BK-20240601-02"
+    },
+    {
+      "id": "RC-006",
+      "date": "2025-10-10",
+      "kind": "sale",
+      "contract_id": "CT-002",
+      "account_id": "ACC-S",
+      "amount": 720000,
+      "supervised_amount": 720000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20251010-01"
+    },
+    {
+      "id": "RC-007",
+      "date": "2025-10-10",
+      "kind": "sale",
+      "contract_id": "CT-002",
+      "account_id": "ACC-G",
+      "amount": 180000,
+      "supervised_amount": 0,
+      "general_amount": 180000,
+      "off_account": false,
+      "bank_ref": "BK-20251010-02"
+    },
+    {
+      "id": "RC-008",
+      "date": "2025-12-01",
+      "kind": "sale",
+      "contract_id": "CT-002",
+      "account_id": "ACC-S",
+      "amount": 1680000,
+      "supervised_amount": 1680000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20251201-01"
+    },
+    {
+      "id": "RC-009",
+      "date": "2025-12-01",
+      "kind": "sale",
+      "contract_id": "CT-002",
+      "account_id": "ACC-G",
+      "amount": 420000,
+      "supervised_amount": 0,
+      "general_amount": 420000,
+      "off_account": false,
+      "bank_ref": "BK-20251201-02"
+    },
+    {
+      "id": "RC-010",
+      "date": "2025-11-05",
+      "kind": "sale",
+      "contract_id": "CT-003",
+      "account_id": "ACC-S",
+      "amount": 672000,
+      "supervised_amount": 672000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20251105-01"
+    },
+    {
+      "id": "RC-011",
+      "date": "2025-11-05",
+      "kind": "sale",
+      "contract_id": "CT-003",
+      "account_id": "ACC-G",
+      "amount": 168000,
+      "supervised_amount": 0,
+      "general_amount": 168000,
+      "off_account": false,
+      "bank_ref": "BK-20251105-02"
+    },
+    {
+      "id": "RC-012",
+      "date": "2026-03-05",
+      "kind": "sale",
+      "contract_id": "CT-001",
+      "account_id": "ACC-X",
+      "amount": 50000,
+      "supervised_amount": 0,
+      "general_amount": 0,
+      "off_account": true,
+      "bank_ref": "BK-20260305-X",
+      "note": "款项被要求打入总部账户，未进入项目账户"
+    },
+    {
+      "id": "RC-013",
+      "date": "2026-03-20",
+      "kind": "correction",
+      "corrects": "RC-012",
+      "account_id": "ACC-S",
+      "amount": 50000,
+      "supervised_amount": 50000,
+      "general_amount": 0,
+      "off_account": false,
+      "bank_ref": "BK-20260320-C",
+      "note": "账户外款项追回后缴入监管专户"
+    }
+  ],
+  "payments": [
+    {
+      "id": "PM-01",
+      "date": "2024-06-10",
+      "type": "milestone",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-GC",
+      "amount": 20000000,
+      "status": "executed",
+      "milestone_id": "MS-101",
+      "purpose": "1 号楼封顶进度款（第一笔）"
+    },
+    {
+      "id": "PM-02",
+      "date": "2024-09-05",
+      "type": "milestone",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-GC",
+      "amount": 10000000,
+      "status": "executed",
+      "milestone_id": "MS-101",
+      "purpose": "1 号楼封顶进度款（第二笔，节点额度付清）"
+    },
+    {
+      "id": "PM-03",
+      "date": "2024-06-12",
+      "type": "obligation",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-TAX",
+      "amount": 1200000,
+      "status": "executed",
+      "obligation_id": "OBL-TAX",
+      "purpose": "法定税款按期缴纳"
+    },
+    {
+      "id": "PM-04",
+      "date": "2025-01-17",
+      "type": "obligation",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-WAGE",
+      "amount": 2000000,
+      "status": "executed",
+      "obligation_id": "OBL-WAGE",
+      "purpose": "农民工工资专户拨付"
+    },
+    {
+      "id": "PM-05",
+      "date": "2025-05-20",
+      "type": "related_party",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-RP",
+      "amount": 8000000,
+      "status": "executed",
+      "purpose": "1 号楼建材采购（关联方，复核定价公允后放行）"
+    },
+    {
+      "id": "PM-06",
+      "date": "2026-04-02",
+      "type": "hq_transfer",
+      "account_id": "ACC-S",
+      "payee_id": "PAY-HQ",
+      "amount": 5000000,
+      "status": "rejected",
+      "purpose": "总部要求上划监管资金，无对应工程或法定义务"
+    },
+    {
+      "id": "PM-07",
+      "date": "2025-12-10",
+      "type": "milestone",
+      "account_id": "ACC-S",
+      "payee_id": "PAY-GC",
+      "amount": 3000000,
+      "status": "executed",
+      "milestone_id": "MS-102",
+      "purpose": "1 号楼竣工节点进度款（监管户支付）"
+    },
+    {
+      "id": "PM-08",
+      "date": "2026-02-20",
+      "type": "refund",
+      "account_id": "ACC-S",
+      "payee_id": "PAY-BUYER3",
+      "amount": 672000,
+      "status": "executed",
+      "contract_id": "CT-003",
+      "purpose": "合同解除，监管部分原路退还购房人"
+    },
+    {
+      "id": "PM-09",
+      "date": "2026-02-20",
+      "type": "refund",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-BUYER3",
+      "amount": 168000,
+      "status": "executed",
+      "contract_id": "CT-003",
+      "purpose": "合同解除，非监管部分退还购房人"
+    },
+    {
+      "id": "PM-10",
+      "date": "2026-03-10",
+      "type": "milestone",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-GC",
+      "amount": 10000000,
+      "status": "executed",
+      "milestone_id": "MS-201",
+      "purpose": "2 号楼封顶进度款"
+    },
+    {
+      "id": "PM-11",
+      "date": "2026-08-15",
+      "type": "hq_transfer",
+      "account_id": "ACC-G",
+      "payee_id": "PAY-HQ",
+      "amount": 3000000,
+      "status": "frozen",
+      "purpose": "总部再次调拨，复核未结案"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "AP-0101",
+      "payment_id": "PM-01",
+      "role": "developer",
+      "actor": "云栖苑置业-工程部",
+      "decision": "approve",
+      "date": "2024-06-05"
+    },
+    {
+      "id": "AP-0102",
+      "payment_id": "PM-01",
+      "role": "supervisor",
+      "actor": "江南监理-王工程师",
+      "decision": "approve",
+      "date": "2024-06-06"
+    },
+    {
+      "id": "AP-0103",
+      "payment_id": "PM-01",
+      "role": "bank",
+      "actor": "滨江银行-客户经理",
+      "decision": "approve",
+      "date": "2024-06-07"
+    },
+    {
+      "id": "AP-0201",
+      "payment_id": "PM-02",
+      "role": "developer",
+      "actor": "云栖苑置业-工程部",
+      "decision": "approve",
+      "date": "2024-08-30"
+    },
+    {
+      "id": "AP-0202",
+      "payment_id": "PM-02",
+      "role": "supervisor",
+      "actor": "江南监理-王工程师",
+      "decision": "approve",
+      "date": "2024-08-31"
+    },
+    {
+      "id": "AP-0203",
+      "payment_id": "PM-02",
+      "role": "bank",
+      "actor": "滨江银行-客户经理",
+      "decision": "approve",
+      "date": "2024-09-02"
+    },
+    {
+      "id": "AP-0301",
+      "payment_id": "PM-03",
+      "role": "developer",
+      "actor": "云栖苑置业-财务部",
+      "decision": "approve",
+      "date": "2024-06-10"
+    },
+    {
+      "id": "AP-0302",
+      "payment_id": "PM-03",
+      "role": "supervisor",
+      "actor": "江南监理-资料员",
+      "decision": "approve",
+      "date": "2024-06-10"
+    },
+    {
+      "id": "AP-0303",
+      "payment_id": "PM-03",
+      "role": "bank",
+      "actor": "滨江银行-柜面",
+      "decision": "approve",
+      "date": "2024-06-11"
+    },
+    {
+      "id": "AP-0401",
+      "payment_id": "PM-04",
+      "role": "developer",
+      "actor": "云栖苑置业-财务部",
+      "decision": "approve",
+      "date": "2025-01-15"
+    },
+    {
+      "id": "AP-0402",
+      "payment_id": "PM-04",
+      "role": "supervisor",
+      "actor": "江南监理-劳资专管员",
+      "decision": "approve",
+      "date": "2025-01-15"
+    },
+    {
+      "id": "AP-0403",
+      "payment_id": "PM-04",
+      "role": "bank",
+      "actor": "滨江银行-客户经理",
+      "decision": "approve",
+      "date": "2025-01-16"
+    },
+    {
+      "id": "AP-0501",
+      "payment_id": "PM-05",
+      "role": "developer",
+      "actor": "云栖苑置业-成本部",
+      "decision": "approve",
+      "date": "2025-05-15"
+    },
+    {
+      "id": "AP-0502",
+      "payment_id": "PM-05",
+      "role": "supervisor",
+      "actor": "江南监理-造价师",
+      "decision": "approve",
+      "date": "2025-05-16"
+    },
+    {
+      "id": "AP-0503",
+      "payment_id": "PM-05",
+      "role": "bank",
+      "actor": "滨江银行-风控",
+      "decision": "approve",
+      "date": "2025-05-17"
+    },
+    {
+      "id": "AP-0504",
+      "payment_id": "PM-05",
+      "role": "committee",
+      "actor": "市风险处置专班",
+      "decision": "approve",
+      "date": "2025-05-19"
+    },
+    {
+      "id": "AP-0601",
+      "payment_id": "PM-06",
+      "role": "bank",
+      "actor": "滨江银行-风控",
+      "decision": "reject",
+      "date": "2026-04-02"
+    },
+    {
+      "id": "AP-0701",
+      "payment_id": "PM-07",
+      "role": "developer",
+      "actor": "云栖苑置业-工程部",
+      "decision": "approve",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "AP-0702",
+      "payment_id": "PM-07",
+      "role": "supervisor",
+      "actor": "江南监理-王工程师",
+      "decision": "approve",
+      "date": "2025-12-05"
+    },
+    {
+      "id": "AP-0703",
+      "payment_id": "PM-07",
+      "role": "bank",
+      "actor": "滨江银行-客户经理",
+      "decision": "approve",
+      "date": "2025-12-08"
+    },
+    {
+      "id": "AP-0801",
+      "payment_id": "PM-08",
+      "role": "developer",
+      "actor": "云栖苑置业-客服部",
+      "decision": "approve",
+      "date": "2026-02-18"
+    },
+    {
+      "id": "AP-0802",
+      "payment_id": "PM-08",
+      "role": "supervisor",
+      "actor": "江南监理-资料员",
+      "decision": "approve",
+      "date": "2026-02-18"
+    },
+    {
+      "id": "AP-0803",
+      "payment_id": "PM-08",
+      "role": "bank",
+      "actor": "滨江银行-柜面",
+      "decision": "approve",
+      "date": "2026-02-19"
+    },
+    {
+      "id": "AP-0901",
+      "payment_id": "PM-09",
+      "role": "developer",
+      "actor": "云栖苑置业-客服部",
+      "decision": "approve",
+      "date": "2026-02-18"
+    },
+    {
+      "id": "AP-0902",
+      "payment_id": "PM-09",
+      "role": "supervisor",
+      "actor": "江南监理-资料员",
+      "decision": "approve",
+      "date": "2026-02-18"
+    },
+    {
+      "id": "AP-0903",
+      "payment_id": "PM-09",
+      "role": "bank",
+      "actor": "滨江银行-柜面",
+      "decision": "approve",
+      "date": "2026-02-19"
+    },
+    {
+      "id": "AP-1001",
+      "payment_id": "PM-10",
+      "role": "developer",
+      "actor": "云栖苑置业-工程部",
+      "decision": "approve",
+      "date": "2026-03-04"
+    },
+    {
+      "id": "AP-1002",
+      "payment_id": "PM-10",
+      "role": "supervisor",
+      "actor": "江南监理-王工程师",
+      "decision": "approve",
+      "date": "2026-03-05"
+    },
+    {
+      "id": "AP-1003",
+      "payment_id": "PM-10",
+      "role": "bank",
+      "actor": "滨江银行-客户经理",
+      "decision": "approve",
+      "date": "2026-03-06"
+    }
+  ],
+  "callbacks": [
+    {
+      "id": "CB-01",
+      "payment_id": "PM-01",
+      "bank_ref": "BK-PAY-20240610-01",
+      "date": "2024-06-10",
+      "status": "applied"
+    },
+    {
+      "id": "CB-02",
+      "payment_id": "PM-01",
+      "bank_ref": "BK-PAY-20240610-01",
+      "date": "2024-06-11",
+      "status": "ignored_duplicate",
+      "note": "银行重复推送回调，幂等忽略"
+    },
+    {
+      "id": "CB-03",
+      "payment_id": "PM-02",
+      "bank_ref": "BK-PAY-20240905-01",
+      "date": "2024-09-05",
+      "status": "applied"
+    },
+    {
+      "id": "CB-04",
+      "payment_id": "PM-03",
+      "bank_ref": "BK-PAY-20240612-01",
+      "date": "2024-06-12",
+      "status": "applied"
+    },
+    {
+      "id": "CB-05",
+      "payment_id": "PM-04",
+      "bank_ref": "BK-PAY-20250117-01",
+      "date": "2025-01-17",
+      "status": "applied"
+    },
+    {
+      "id": "CB-06",
+      "payment_id": "PM-05",
+      "bank_ref": "BK-PAY-20250520-01",
+      "date": "2025-05-20",
+      "status": "applied"
+    },
+    {
+      "id": "CB-07",
+      "payment_id": "PM-07",
+      "bank_ref": "BK-PAY-20251210-01",
+      "date": "2025-12-10",
+      "status": "applied"
+    },
+    {
+      "id": "CB-08",
+      "payment_id": "PM-08",
+      "bank_ref": "BK-PAY-20260220-01",
+      "date": "2026-02-20",
+      "status": "applied"
+    },
+    {
+      "id": "CB-09",
+      "payment_id": "PM-09",
+      "bank_ref": "BK-PAY-20260220-02",
+      "date": "2026-02-20",
+      "status": "applied"
+    },
+    {
+      "id": "CB-10",
+      "payment_id": "PM-10",
+      "bank_ref": "BK-PAY-20260310-01",
+      "date": "2026-03-10",
+      "status": "applied"
+    }
+  ],
+  "freeze_reviews": [
+    {
+      "id": "FR-01",
+      "trigger": "related_party",
+      "payment_id": "PM-05",
+      "opened_date": "2025-05-08",
+      "closed_date": "2025-05-19",
+      "result": "released",
+      "reason": "关联建材采购，比价后定价公允，款项仅限工程用途"
+    },
+    {
+      "id": "FR-02",
+      "trigger": "hq_transfer",
+      "payment_id": "PM-06",
+      "opened_date": "2026-04-01",
+      "closed_date": "2026-04-02",
+      "result": "rejected",
+      "reason": "调拨无对应已核验工程或法定义务，拒绝并退回申请"
+    },
+    {
+      "id": "FR-03",
+      "trigger": "off_account_receipt",
+      "receipt_id": "RC-012",
+      "opened_date": "2026-03-06",
+      "closed_date": "2026-03-18",
+      "result": "returned",
+      "reason": "购房款被打入总部账户，冻结相关合同收款，责令追回入专户"
+    },
+    {
+      "id": "FR-04",
+      "trigger": "hq_transfer",
+      "payment_id": "PM-11",
+      "opened_date": "2026-08-15",
+      "closed_date": null,
+      "result": "pending",
+      "reason": "全面冻结期内的总部调拨，待专班复核"
+    }
+  ],
+  "takeovers": [
+    {
+      "id": "TK-01",
+      "authority": "市房地产风险处置专班",
+      "reason": "区域企业流动性监测预警",
+      "start_date": "2025-03-01",
+      "end_date": "2025-06-30",
+      "permission": "committee_only"
+    },
+    {
+      "id": "TK-02",
+      "authority": "市房地产风险处置专班",
+      "reason": "总部多次试图调拨项目资金，启动全面冻结",
+      "start_date": "2026-07-01",
+      "end_date": null,
+      "permission": "frozen"
+    }
+  ],
+  "deliveries": [
+    {
+      "id": "DL-01",
+      "contract_id": "CT-002",
+      "date": "2025-12-20",
+      "evidence_ref": "YXF-2025-1220-101",
+      "note": "现房交付：竣工验收备案、分户验收、钥匙交接影像齐备"
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "AU-001",
+      "date": "2024-01-15",
+      "actor": "滨江银行",
+      "action": "开发贷入账 RC-001",
+      "prev_hash": "GENESIS",
+      "hash": "198e070a27e7a6567a83ee512f676e0be6c24bd17b6798d5d13484a4786fffee"
+    },
+    {
+      "id": "AU-002",
+      "date": "2024-03-10",
+      "actor": "住建部门",
+      "action": "预售合同 CT-001 备案（规则快照 P-2023，监管 60%）",
+      "prev_hash": "198e070a27e7a6567a83ee512f676e0be6c24bd17b6798d5d13484a4786fffee",
+      "hash": "6dd0a11cab027d1741282c9d7c378f4d2b79e338dece0c7426dc7f4501a9618c"
+    },
+    {
+      "id": "AU-003",
+      "date": "2024-03-12",
+      "actor": "滨江银行",
+      "action": "首付款按比例入监管户/一般户 RC-002/003",
+      "prev_hash": "6dd0a11cab027d1741282c9d7c378f4d2b79e338dece0c7426dc7f4501a9618c",
+      "hash": "f411700031cc2e4bec382c05fef50f14bab01fe6c5780271f3f0a800d5f9d6c9"
+    },
+    {
+      "id": "AU-004",
+      "date": "2024-05-20",
+      "actor": "江南监理",
+      "action": "节点 MS-101 核验通过",
+      "prev_hash": "f411700031cc2e4bec382c05fef50f14bab01fe6c5780271f3f0a800d5f9d6c9",
+      "hash": "d6d852a9f0b7cfd5d872e1fffc9a6db7ce9e5639cb4fc9e6df2e480cd4f80c5e"
+    },
+    {
+      "id": "AU-005",
+      "date": "2024-06-01",
+      "actor": "滨江银行",
+      "action": "按揭放款按比例入账 RC-004/005",
+      "prev_hash": "d6d852a9f0b7cfd5d872e1fffc9a6db7ce9e5639cb4fc9e6df2e480cd4f80c5e",
+      "hash": "eed1b0ac1602a2dc41ce82d60c4028c3e71264d3376982a781fc095b061e26fa"
+    },
+    {
+      "id": "AU-006",
+      "date": "2024-06-10",
+      "actor": "滨江银行",
+      "action": "进度款 PM-01 多方审批后支付",
+      "prev_hash": "eed1b0ac1602a2dc41ce82d60c4028c3e71264d3376982a781fc095b061e26fa",
+      "hash": "742e22d65f08cb925407e22471d843739c2b31ceb14c5a14b17dba8713ea4698"
+    },
+    {
+      "id": "AU-007",
+      "date": "2024-06-11",
+      "actor": "滨江银行",
+      "action": "重复回调幂等忽略 CB-02",
+      "prev_hash": "742e22d65f08cb925407e22471d843739c2b31ceb14c5a14b17dba8713ea4698",
+      "hash": "aab667319b3d2f66fa06fff0b1b7d6830e404f1d39d0abb88d5fe505ff7985dc"
+    },
+    {
+      "id": "AU-008",
+      "date": "2024-06-12",
+      "actor": "滨江银行",
+      "action": "法定税款 PM-03 划缴",
+      "prev_hash": "aab667319b3d2f66fa06fff0b1b7d6830e404f1d39d0abb88d5fe505ff7985dc",
+      "hash": "c76a97502e51bfb4b4cac76cdebdf940a0a82a333e24af4be4a32838bc8fde78"
+    },
+    {
+      "id": "AU-009",
+      "date": "2024-09-05",
+      "actor": "滨江银行",
+      "action": "进度款 PM-02 支付，MS-101 额度付清",
+      "prev_hash": "c76a97502e51bfb4b4cac76cdebdf940a0a82a333e24af4be4a32838bc8fde78",
+      "hash": "b4d37db36b57d08149403b89c8b0c5dadcc0a5b8c5d7cecf89c8132f3d5b384f"
+    },
+    {
+      "id": "AU-010",
+      "date": "2025-01-01",
+      "actor": "住建部门",
+      "action": "制度 P-2025 生效（旧合同不追溯）",
+      "prev_hash": "b4d37db36b57d08149403b89c8b0c5dadcc0a5b8c5d7cecf89c8132f3d5b384f",
+      "hash": "ca778a406afcbb4a6756c6925d00f17cb38edb6b2b1535429cdb04527ef28f6c"
+    },
+    {
+      "id": "AU-011",
+      "date": "2025-01-17",
+      "actor": "滨江银行",
+      "action": "农民工工资 PM-04 拨付",
+      "prev_hash": "ca778a406afcbb4a6756c6925d00f17cb38edb6b2b1535429cdb04527ef28f6c",
+      "hash": "9979b1439326f097f6d73c2b1b9d468eaf23a485d641a125354beaa18c676fb9"
+    },
+    {
+      "id": "AU-012",
+      "date": "2025-03-01",
+      "actor": "风险处置专班",
+      "action": "接管 TK-01：专班审批期开始",
+      "prev_hash": "9979b1439326f097f6d73c2b1b9d468eaf23a485d641a125354beaa18c676fb9",
+      "hash": "cbb54dc1241d5eedf6b74af612b2207a639b539cf20de721d48a73a9f6db7fe0"
+    },
+    {
+      "id": "AU-013",
+      "date": "2025-05-08",
+      "actor": "滨江银行",
+      "action": "关联交易 PM-05 触发冻结复核 FR-01",
+      "prev_hash": "cbb54dc1241d5eedf6b74af612b2207a639b539cf20de721d48a73a9f6db7fe0",
+      "hash": "123f34bc9128678286bbeae65c21bef8f891eb3e2a7d7e0f929b464312436626"
+    },
+    {
+      "id": "AU-014",
+      "date": "2025-05-20",
+      "actor": "滨江银行",
+      "action": "复核通过且专班审批，PM-05 放行",
+      "prev_hash": "123f34bc9128678286bbeae65c21bef8f891eb3e2a7d7e0f929b464312436626",
+      "hash": "cd374d6fbf73235b5392e2793bc977bffe7ab665fe49854567e78002f10a1184"
+    },
+    {
+      "id": "AU-015",
+      "date": "2025-06-30",
+      "actor": "风险处置专班",
+      "action": "接管 TK-01 结束",
+      "prev_hash": "cd374d6fbf73235b5392e2793bc977bffe7ab665fe49854567e78002f10a1184",
+      "hash": "85b67ffb6895a4818c64f443fd32898db39239f581b44b060fba3fe4c06caf46"
+    },
+    {
+      "id": "AU-016",
+      "date": "2025-09-15",
+      "actor": "住建部门",
+      "action": "1 号楼竣工验收备案 JGBA-2025-0915-01",
+      "prev_hash": "85b67ffb6895a4818c64f443fd32898db39239f581b44b060fba3fe4c06caf46",
+      "hash": "865c90796f7e072e9f834c41d10c1a6d931df8a13d9c5cefda712f02712055a2"
+    },
+    {
+      "id": "AU-017",
+      "date": "2025-10-08",
+      "actor": "住建部门",
+      "action": "现房合同 CT-002 备案（规则快照 P-2025，监管 80%）",
+      "prev_hash": "865c90796f7e072e9f834c41d10c1a6d931df8a13d9c5cefda712f02712055a2",
+      "hash": "2939510c52a378904782ee50556294c4f2f972ebc8f5b8e3f517e0294ec998c1"
+    },
+    {
+      "id": "AU-018",
+      "date": "2025-11-02",
+      "actor": "住建部门",
+      "action": "现房合同 CT-003 备案",
+      "prev_hash": "2939510c52a378904782ee50556294c4f2f972ebc8f5b8e3f517e0294ec998c1",
+      "hash": "cc68265a9d2dbce67b87aa73904a2b0a78e38e6cb0b8636cc1228bec2c7119c2"
+    },
+    {
+      "id": "AU-019",
+      "date": "2025-12-10",
+      "actor": "滨江银行",
+      "action": "竣工节点款 PM-07 自监管户支付",
+      "prev_hash": "cc68265a9d2dbce67b87aa73904a2b0a78e38e6cb0b8636cc1228bec2c7119c2",
+      "hash": "14b1ecd156cce2ecc32941ddee5fb4f2ecf721b4ca0eba273fb01c40f9013950"
+    },
+    {
+      "id": "AU-020",
+      "date": "2025-12-20",
+      "actor": "住建部门",
+      "action": "现房交付 DL-01 证据归档",
+      "prev_hash": "14b1ecd156cce2ecc32941ddee5fb4f2ecf721b4ca0eba273fb01c40f9013950",
+      "hash": "6201666e7dc08f606efdc9d91bfa4a65f6d5215ea1fc62d356ce508e5cebde96"
+    },
+    {
+      "id": "AU-021",
+      "date": "2026-02-15",
+      "actor": "住建部门",
+      "action": "合同 CT-003 协议解除",
+      "prev_hash": "6201666e7dc08f606efdc9d91bfa4a65f6d5215ea1fc62d356ce508e5cebde96",
+      "hash": "b214900bc3e03ae38bf53be9198f4924d0894ae36e8fa46a220d9f56bb79d4f0"
+    },
+    {
+      "id": "AU-022",
+      "date": "2026-02-20",
+      "actor": "滨江银行",
+      "action": "退房退款 PM-08/PM-09 原路退回",
+      "prev_hash": "b214900bc3e03ae38bf53be9198f4924d0894ae36e8fa46a220d9f56bb79d4f0",
+      "hash": "8e08f7737dee87358e9120726d846ef6f31a64b5dcce915db6b9125dcb0e2ac2"
+    },
+    {
+      "id": "AU-023",
+      "date": "2026-03-05",
+      "actor": "滨江银行",
+      "action": "账户外回款 RC-012 预警并冻结 FR-03",
+      "prev_hash": "8e08f7737dee87358e9120726d846ef6f31a64b5dcce915db6b9125dcb0e2ac2",
+      "hash": "ac4a6f5c2e9de87bede8a4aa5374750c2e1cb1b40c8f929d259a3557f9b805dd"
+    },
+    {
+      "id": "AU-024",
+      "date": "2026-03-18",
+      "actor": "风险处置专班",
+      "action": "责令追回账户外款项",
+      "prev_hash": "ac4a6f5c2e9de87bede8a4aa5374750c2e1cb1b40c8f929d259a3557f9b805dd",
+      "hash": "596eb89ea7e5d9d7070975d3044fbc267f6343279636e21ff64fbbfd60f6feec"
+    },
+    {
+      "id": "AU-025",
+      "date": "2026-03-20",
+      "actor": "滨江银行",
+      "action": "追回款缴入监管专户 RC-013",
+      "prev_hash": "596eb89ea7e5d9d7070975d3044fbc267f6343279636e21ff64fbbfd60f6feec",
+      "hash": "20ace71cec0749ff92ae50df0fc2c5e6ee6b0e58a8aaaa8d2dee5fe39306229f"
+    },
+    {
+      "id": "AU-026",
+      "date": "2026-04-02",
+      "actor": "滨江银行",
+      "action": "总部调拨 PM-06 拒绝 FR-02",
+      "prev_hash": "20ace71cec0749ff92ae50df0fc2c5e6ee6b0e58a8aaaa8d2dee5fe39306229f",
+      "hash": "1636fd07f54b43c1c26a27f9e715086c7c9e211c3517cd4d87d06a69f6bdd909"
+    },
+    {
+      "id": "AU-027",
+      "date": "2026-07-01",
+      "actor": "风险处置专班",
+      "action": "全面冻结接管 TK-02 开始",
+      "prev_hash": "1636fd07f54b43c1c26a27f9e715086c7c9e211c3517cd4d87d06a69f6bdd909",
+      "hash": "fae47079f0ebccb89320c1f66bd9954503e0e74a240d366845d57d5b04bc2b85"
+    },
+    {
+      "id": "AU-028",
+      "date": "2026-08-15",
+      "actor": "滨江银行",
+      "action": "总部调拨 PM-11 挂起 FR-04",
+      "prev_hash": "fae47079f0ebccb89320c1f66bd9954503e0e74a240d366845d57d5b04bc2b85",
+      "hash": "7fa730515efa109f962ee6ef6c38be32045053826774918a69396b639ae6cabd"
+    }
+  ]
+}
